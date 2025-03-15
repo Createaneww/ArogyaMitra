@@ -3,50 +3,94 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Heart Rate Monitor (Real BPM)</title>
+    <title>Heart Rate Monitor</title>
     <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
     <style>
+      /* Global Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
         font-family: "Poppins", sans-serif;
-        text-align: center;
-        background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
-        color: white;
+        background: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
         padding: 20px;
       }
+
+      /* Container */
       .container {
-        max-width: 500px;
-        margin: auto;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        max-width: 450px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
         text-align: center;
+        border-top: 5px solid #e74c3c;
       }
+
+      h2 {
+        font-size: 24px;
+        color: #2c3e50;
+        margin-bottom: 12px;
+      }
+
+      p {
+        color: #555;
+        font-size: 15px;
+        margin-bottom: 15px;
+      }
+
+      /* Video Feed */
       video {
         width: 100%;
         border-radius: 10px;
         margin-top: 10px;
+        border: 2px solid #e74c3c;
       }
+
+      /* Button */
       button {
-        padding: 12px;
         width: 100%;
-        background: #ffcc00;
-        color: black;
-        font-weight: bold;
+        padding: 14px;
+        background: #e74c3c;
+        color: white;
+        font-size: 17px;
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        margin-top: 10px;
-        transition: 0.3s;
+        margin-top: 20px;
+        transition: background 0.3s, transform 0.2s;
       }
+
       button:hover {
-        background: #ffaa00;
+        background: #c0392b;
+        transform: scale(1.02);
       }
+
+      /* BPM Display */
       #bpm {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
-        margin-top: 15px;
+        text-align: center;
+        margin-top: 20px;
+        background: #ecf0f1;
+        padding: 10px;
+        border-radius: 8px;
+        border: 2px solid #e74c3c;
+        display: none;
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .container {
+          width: 90%;
+        }
       }
     </style>
   </head>
@@ -72,6 +116,9 @@
             video: { facingMode: "environment" },
           });
           video.srcObject = stream;
+
+          // Show BPM Box
+          bpmDisplay.style.display = "block";
 
           // Start processing video frames
           startTime = Date.now();

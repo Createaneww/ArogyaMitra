@@ -5,57 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Symptom Checker</title>
     <style>
+      /* Global Styling */
       body {
         font-family: "Poppins", sans-serif;
         text-align: center;
-        background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
-        color: white;
+        background: #f4f4f4;
         padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
+
+      /* Container */
       .container {
         max-width: 500px;
-        margin: auto;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
         text-align: center;
+        border-top: 5px solid #3498db;
       }
+
+      h2 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      p {
+        color: #555;
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      /* Textarea Styling */
       textarea {
         width: 100%;
         padding: 12px;
-        margin-top: 10px;
         border-radius: 8px;
         font-size: 16px;
-        border: none;
+        border: 1px solid #ccc;
         outline: none;
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
+        background: #f8f9fa;
+        resize: none;
+        transition: border 0.3s;
       }
+
+      textarea:focus {
+        border: 1px solid #3498db;
+        background: white;
+      }
+
+      /* Button */
       button {
-        padding: 12px;
         width: 100%;
-        background: #ffcc00;
-        color: black;
-        font-weight: bold;
+        padding: 14px;
+        background: #3498db;
+        color: white;
+        font-size: 17px;
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        margin-top: 10px;
-        transition: 0.3s;
-      }
-      button:hover {
-        background: #ffaa00;
-      }
-      #result {
-        font-size: 18px;
-        font-weight: bold;
         margin-top: 20px;
+        transition: background 0.3s, transform 0.2s;
+      }
+
+      button:hover {
+        background: #2980b9;
+        transform: scale(1.02);
+      }
+
+      /* Result Box */
+      #result {
+        font-size: 16px;
+        font-weight: bold;
         text-align: left;
-        background: rgba(255, 255, 255, 0.2);
+        margin-top: 20px;
+        background: #e9f7ef;
         padding: 15px;
         border-radius: 8px;
+        display: none;
+      }
+
+      /* Typing Animation */
+      .typing {
+        display: inline-block;
+        font-size: 16px;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .typing span {
+        display: inline-block;
+        animation: blink 1.5s infinite;
+      }
+
+      .typing span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .typing span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
       }
     </style>
   </head>
@@ -79,11 +144,14 @@
 
         if (symptoms.trim() === "") {
           resultDiv.innerHTML = "⚠️ Please enter your symptoms.";
+          resultDiv.style.display = "block";
           return;
         }
 
-        resultDiv.innerHTML = "⏳ Analyzing symptoms... Please wait.";
+        resultDiv.innerHTML = `<span class="typing">⏳ Analyzing symptoms<span>.</span><span>.</span><span>.</span></span>`;
+        resultDiv.style.display = "block";
 
+        // OpenAI API call (replace 'sk-' with your actual API key)
         const apiKey = "sk-";
         const endpoint = "https://api.openai.com/v1/chat/completions";
 

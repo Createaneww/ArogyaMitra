@@ -13,51 +13,51 @@
       }
       body {
         font-family: "Poppins", sans-serif;
-        background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
+        background: #f4f4f4;
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
         padding: 20px;
-        color: white;
       }
 
-      /* Glassmorphism Container */
+      /* Container */
       .container {
-        max-width: 400px;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        max-width: 450px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
         text-align: center;
-        transition: all 0.3s ease-in-out;
+        border-top: 5px solid #3498db;
       }
 
       h2 {
         font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 15px;
+        color: #2c3e50;
+        margin-bottom: 12px;
+      }
+
+      p {
+        color: #555;
+        font-size: 15px;
+        margin-bottom: 20px;
       }
 
       /* Instructions Section */
       .instructions {
-        background: rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(8px);
+        background: #ecf0f1;
         padding: 15px;
-        border-radius: 12px;
+        border-radius: 10px;
         margin-bottom: 20px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         text-align: left;
-        color: white;
-        transition: max-height 0.4s ease-in-out, opacity 0.3s;
       }
 
       .instructions h3 {
         font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
+        color: #2c3e50;
+        margin-bottom: 8px;
       }
 
       .instructions ul {
@@ -75,32 +75,7 @@
       .instructions ul li::before {
         content: "✔️";
         margin-right: 10px;
-        color: #ffcc00;
-      }
-
-      /* Toggle Button */
-      .toggle-btn {
-        background: #ffcc00;
-        color: black;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-        padding: 10px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        transition: 0.3s;
-      }
-
-      .toggle-btn:hover {
-        background: #ffaa00;
-        transform: scale(1.05);
-      }
-
-      /* Hide Instructions Initially */
-      .hidden {
-        max-height: 0;
-        opacity: 0;
-        overflow: hidden;
+        color: #3498db;
       }
 
       /* Inputs & Buttons */
@@ -112,33 +87,65 @@
         margin-top: 12px;
         border-radius: 8px;
         font-size: 16px;
-        border: none;
+        border: 1px solid #ccc;
         outline: none;
         transition: 0.3s;
+        background: #f8f9fa;
       }
 
-      select,
-      input {
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-      }
-
-      select option {
-        color: black;
+      select:focus,
+      input:focus {
+        border: 1px solid #3498db;
+        background: white;
       }
 
       button {
-        background: #ffcc00;
-        color: black;
+        background: #3498db;
+        color: white;
         font-weight: bold;
         cursor: pointer;
         transition: background 0.3s, transform 0.2s;
       }
 
       button:hover {
-        background: #ffaa00;
+        background: #2980b9;
         transform: scale(1.05);
+      }
+
+      /* Result Box */
+      #result {
+        font-size: 16px;
+        font-weight: bold;
+        text-align: left;
+        margin-top: 20px;
+        background: #e9f7ef;
+        padding: 15px;
+        border-radius: 8px;
+        display: none;
+      }
+
+      /* Ayurvedic Recommendations */
+      .recommendations {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 15px;
+        background: #fdf2e9;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .recommendations h4 {
+        color: #d35400;
+        margin-bottom: 8px;
+      }
+
+      .recommendations ul {
+        padding-left: 20px;
+      }
+
+      .recommendations ul li::before {
+        content: "🌿";
+        margin-right: 8px;
       }
 
       /* Responsive */
@@ -152,21 +159,14 @@
   <body>
     <div class="container">
       <h2>🧘 Self Nadi Pariksha</h2>
+      <p>Analyze your pulse and get personalized Ayurvedic guidance.</p>
 
-      <!-- Toggle Instructions -->
-      <button class="toggle-btn" onclick="toggleInstructions()">
-        Show Instructions 📖
-      </button>
-
-      <div class="instructions hidden" id="instructions">
+      <div class="instructions">
         <h3>How to Perform Self Nadi Pariksha:</h3>
         <ul>
           <li>Sit in a relaxed position and stay calm for a few minutes.</li>
-          <li>
-            Place the index, middle, and ring fingers of your right hand on the
-            inner wrist of your left hand.
-          </li>
-          <li>Press gently to feel the pulse rhythm.</li>
+          <li>Place three fingers on your wrist to feel the pulse.</li>
+          <li>Press gently to detect the rhythm.</li>
           <li>Count the beats for 15 seconds and multiply by 4 to get BPM.</li>
           <li>Enter your BPM and gender below to analyze your Nadi type.</li>
         </ul>
@@ -186,21 +186,6 @@
     </div>
 
     <script>
-      // Toggle Instructions Visibility
-      function toggleInstructions() {
-        let instructions = document.getElementById("instructions");
-        let button = document.querySelector(".toggle-btn");
-
-        if (instructions.classList.contains("hidden")) {
-          instructions.classList.remove("hidden");
-          button.innerHTML = "Hide Instructions 📖";
-        } else {
-          instructions.classList.add("hidden");
-          button.innerHTML = "Show Instructions 📖";
-        }
-      }
-
-      // Analyze Pulse and Show Dosha
       function analyzePulse() {
         let pulseRate = parseInt(document.getElementById("pulse").value);
         let gender = document.getElementById("gender").value;
@@ -214,15 +199,40 @@
             gender === "female" ? pulseRate - 5 : pulseRate;
 
           if (adjustedPulseRate >= 80) {
-            result = `<b>Vata Dosha</b> - You may experience anxiety, dryness, or cold hands.`;
+            result = `<b>Vata Dosha</b> - You may experience anxiety, dryness, or cold hands.
+                    <div class='recommendations'>
+                        <h4>🌱 Ayurvedic Recommendations:</h4>
+                        <ul>
+                            <li>Eat warm, oily foods like soups, nuts, ghee, and root vegetables.</li>
+                            <li>Avoid raw foods and excessive caffeine.</li>
+                            <li>Practice yoga poses like Balasana (Child’s Pose) and Tadasana.</li>
+                        </ul>
+                    </div>`;
           } else if (adjustedPulseRate >= 70) {
-            result = `<b>Pitta Dosha</b> - You may have good digestion but could experience acidity.`;
+            result = `<b>Pitta Dosha</b> - You may have good digestion but could experience acidity.
+                    <div class='recommendations'>
+                        <h4>🌱 Ayurvedic Recommendations:</h4>
+                        <ul>
+                            <li>Eat cooling foods like cucumber, melons, coconut water, and leafy greens.</li>
+                            <li>Avoid spicy and fried foods.</li>
+                            <li>Practice calming yoga like Shavasana and Moon Salutations.</li>
+                        </ul>
+                    </div>`;
           } else {
-            result = `<b>Kapha Dosha</b> - You may have a strong immune system but could feel sluggish.`;
+            result = `<b>Kapha Dosha</b> - You may have a strong immune system but could feel sluggish.
+                    <div class='recommendations'>
+                        <h4>🌱 Ayurvedic Recommendations:</h4>
+                        <ul>
+                            <li>Consume light, warm foods with spices like ginger, turmeric, and pepper.</li>
+                            <li>Avoid dairy and heavy foods.</li>
+                            <li>Practice active yoga like Surya Namaskar and Warrior Pose.</li>
+                        </ul>
+                    </div>`;
           }
         }
+
         resultDiv.innerHTML = result;
-        resultDiv.classList.add("show-result");
+        resultDiv.style.display = "block";
       }
     </script>
   </body>

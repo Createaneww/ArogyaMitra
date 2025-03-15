@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BMI Reference Chart</title>
+    <style>
+      /* Global Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #f4f4f4;
+        text-align: center;
+        padding: 20px;
+      }
+
+      /* Container */
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        font-size: 24px;
+        color: #2c3e50;
+        margin-bottom: 15px;
+      }
+
+      p {
+        color: #555;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+
+      th {
+        background: #2c3e50;
+        color: white;
+      }
+
+      .underweight {
+        background: #f9ebae;
+      } /* Yellow */
+      .normal {
+        background: #b9f6ca;
+      } /* Green */
+      .overweight {
+        background: #ffccbc;
+      } /* Orange */
+      .obese {
+        background: #ff8a80;
+      } /* Red */
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        th,
+        td {
+          padding: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>📊 BMI Reference Chart</h2>
+      <p>
+        Use this chart to understand how BMI is calculated based on height and
+        weight.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Height (cm)</th>
+            <th>Weight (kg)</th>
+            <th>BMI</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="underweight">
+            <td>170</td>
+            <td>50</td>
+            <td>17.3</td>
+            <td>Underweight</td>
+          </tr>
+          <tr class="normal">
+            <td>170</td>
+            <td>65</td>
+            <td>22.5</td>
+            <td>Normal</td>
+          </tr>
+          <tr class="overweight">
+            <td>170</td>
+            <td>80</td>
+            <td>27.7</td>
+            <td>Overweight</td>
+          </tr>
+          <tr class="obese">
+            <td>170</td>
+            <td>95</td>
+            <td>32.9</td>
+            <td>Obese</td>
+          </tr>
+          <tr class="underweight">
+            <td>180</td>
+            <td>60</td>
+            <td>18.5</td>
+            <td>Underweight</td>
+          </tr>
+          <tr class="normal">
+            <td>180</td>
+            <td>75</td>
+            <td>23.1</td>
+            <td>Normal</td>
+          </tr>
+          <tr class="overweight">
+            <td>180</td>
+            <td>90</td>
+            <td>27.8</td>
+            <td>Overweight</td>
+          </tr>
+          <tr class="obese">
+            <td>180</td>
+            <td>110</td>
+            <td>34.0</td>
+            <td>Obese</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

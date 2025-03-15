@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced BMI Calculator</title>
+    <style>
+      /* Global Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      /* Main Container */
+      .container {
+        display: flex;
+        max-width: 950px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Left - BMI Calculator */
+      .bmi-calculator {
+        flex: 1;
+        padding-right: 20px;
+        border-right: 2px solid #ecf0f1;
+      }
+
+      h2 {
+        font-size: 24px;
+        color: #2c3e50;
+        margin-bottom: 12px;
+      }
+
+      p {
+        color: #555;
+        font-size: 15px;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #2c3e50;
+      }
+
+      input,
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        border-radius: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: 0.3s;
+        background: #f8f9fa;
+      }
+
+      input:focus {
+        border: 1px solid #27ae60;
+        background: white;
+      }
+
+      button {
+        background: #27ae60;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+        margin-top: 15px;
+      }
+
+      button:hover {
+        background: #1e8449;
+        transform: scale(1.05);
+      }
+
+      /* Result Box */
+      #result {
+        font-size: 16px;
+        font-weight: bold;
+        text-align: left;
+        margin-top: 20px;
+        background: #e9f7ef;
+        padding: 15px;
+        border-radius: 8px;
+        display: none;
+      }
+
+      /* Right - Informational Panel */
+      .info-panel {
+        flex: 1;
+        padding-left: 20px;
+      }
+
+      .info-panel h3 {
+        font-size: 20px;
+        color: #27ae60;
+        margin-bottom: 10px;
+      }
+
+      .info-panel ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .info-panel ul li {
+        margin-bottom: 10px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+      }
+
+      .info-panel ul li::before {
+        content: "✅";
+        margin-right: 8px;
+        color: #27ae60;
+      }
+
+      /* Diet & Exercise Plan */
+      .plan {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 15px;
+        background: #fdf2e9;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .plan h4 {
+        color: #d35400;
+        margin-bottom: 8px;
+      }
+
+      .plan ul {
+        padding-left: 20px;
+      }
+
+      .plan ul li::before {
+        content: "🍎";
+        margin-right: 8px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+        .bmi-calculator {
+          border-right: none;
+          padding-right: 0;
+          padding-bottom: 20px;
+        }
+        .info-panel {
+          padding-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Left Side: BMI Calculator -->
+      <div class="bmi-calculator">
+        <h2>⚖️ BMI Calculator</h2>
+        <p>Enter your height and weight to calculate your BMI.</p>
+
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" placeholder="Enter height in cm" />
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" placeholder="Enter weight in kg" />
+
+        <button onclick="calculateBMI()">Calculate BMI</button>
+
+        <div id="result"></div>
+        <!-- Add this inside the .bmi-calculator div, below the result div -->
+        <button
+          onclick="window.location.href='bmi-chart.html'"
+          style="
+            margin-top: 10px;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s, transform 0.2s;
+          "
+        >
+          📊 View BMI Chart
+        </button>
+      </div>
+
+      <!-- Right Side: Informational Panel -->
+      <div class="info-panel">
+        <h3>What is BMI?</h3>
+        <p>
+          The Body Mass Index (BMI) is a simple calculation used to determine
+          whether a person has a healthy body weight for their height.
+        </p>
+
+        <h3>BMI Categories:</h3>
+        <ul>
+          <li><b>Underweight:</b> BMI below 18.5</li>
+          <li><b>Normal Weight:</b> BMI 18.5 - 24.9</li>
+          <li><b>Overweight:</b> BMI 25 - 29.9</li>
+          <li><b>Obese:</b> BMI 30 or above</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      function calculateBMI() {
+        let height = parseFloat(document.getElementById("height").value) / 100;
+        let weight = parseFloat(document.getElementById("weight").value);
+        let resultDiv = document.getElementById("result");
+
+        if (!height || !weight || height <= 0 || weight <= 0) {
+          resultDiv.innerHTML = "⚠️ Please enter valid height and weight.";
+          resultDiv.style.display = "block";
+          return;
+        }
+
+        let bmi = (weight / (height * height)).toFixed(1);
+        let resultText = "";
+        let plan = "";
+
+        if (bmi < 18.5) {
+          resultText = `⚠️ Underweight (BMI: ${bmi}) - You may need to gain weight.`;
+          plan = `<div class="plan"><h4>🍲 Diet Plan:</h4>
+                        <ul><li>Eat high-calorie, nutrient-dense foods.</li>
+                        <li>Include proteins, whole grains, and healthy fats.</li></ul>
+                        <h4>🏋️ Exercise Plan:</h4>
+                        <ul><li>Strength training to build muscle.</li>
+                        <li>Moderate cardio exercises.</li></ul></div>`;
+        } else if (bmi >= 18.5 && bmi < 24.9) {
+          resultText = `✅ Normal Weight (BMI: ${bmi}) - You have a healthy weight!`;
+          plan = `<div class="plan"><h4>🍎 Healthy Tips:</h4>
+                        <ul><li>Maintain balanced diet & exercise routine.</li>
+                        <li>Stay hydrated and get enough sleep.</li></ul></div>`;
+        } else if (bmi >= 25 && bmi < 29.9) {
+          resultText = `⚠️ Overweight (BMI: ${bmi}) - Consider making lifestyle changes.`;
+          plan = `<div class="plan"><h4>🥗 Diet Plan:</h4>
+                        <ul><li>Reduce sugar & processed foods.</li>
+                        <li>Increase veggies and lean proteins.</li></ul></div>`;
+        } else {
+          resultText = `🚨 Obese (BMI: ${bmi}) - You may need medical guidance.`;
+          plan = `<div class="plan"><h4>⚠️ Recommendations:</h4>
+                        <ul><li>Adopt portion-controlled diet.</li>
+                        <li>Engage in regular exercise.</li></ul></div>`;
+        }
+
+        resultDiv.innerHTML = `<p>${resultText}</p>${plan}`;
+        resultDiv.style.display = "block";
+      }
+    </script>
+  </body>
+</html>

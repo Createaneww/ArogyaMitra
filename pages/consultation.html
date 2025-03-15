@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book a Consultation</title>
+    <style>
+      /* Global Styling */
+      body {
+        font-family: "Poppins", sans-serif;
+        text-align: center;
+        background: #f8f9fa;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      /* Container */
+      .container {
+        max-width: 500px;
+        background: white;
+        padding: 35px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        border-top: 5px solid #3498db;
+      }
+
+      h2 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+
+      p {
+        color: #555;
+        font-size: 15px;
+        text-align: center;
+        margin-bottom: 25px;
+      }
+
+      /* Input Fields */
+      label {
+        font-weight: bold;
+        color: #2c3e50;
+        display: block;
+        margin-top: 12px;
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 14px;
+        margin-top: 8px;
+        border-radius: 8px;
+        font-size: 16px;
+        border: 1px solid #ced4da;
+        outline: none;
+        transition: border 0.3s;
+        background: #f8f9fa;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border: 1px solid #3498db;
+        background: white;
+      }
+
+      textarea {
+        resize: none;
+      }
+
+      /* Button */
+      button {
+        width: 100%;
+        padding: 14px;
+        background: #3498db;
+        color: white;
+        font-size: 17px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background 0.3s, transform 0.2s;
+      }
+
+      button:hover {
+        background: #2980b9;
+        transform: scale(1.02);
+      }
+
+      /* Success Message */
+      #successMessage {
+        color: green;
+        font-weight: bold;
+        text-align: center;
+        display: none;
+        margin-top: 20px;
+        background: #e9f7ef;
+        padding: 10px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>📅 Book a Consultation</h2>
+      <p>Schedule an appointment with our expert health professionals.</p>
+
+      <form id="consultationForm">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter your full name"
+          required
+        />
+
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required
+        />
+
+        <label for="phone">Phone Number</label>
+        <input
+          type="tel"
+          id="phone"
+          placeholder="Enter your phone number"
+          required
+        />
+
+        <label for="date">Preferred Appointment Date</label>
+        <input type="date" id="date" required />
+
+        <label for="concern">Health Concern</label>
+        <textarea
+          id="concern"
+          rows="3"
+          placeholder="Describe your health concern"
+          required
+        ></textarea>
+
+        <button type="submit">Book Appointment</button>
+      </form>
+
+      <p id="successMessage">
+        ✔ Appointment booked successfully! We will contact you soon.
+      </p>
+    </div>
+
+    <script>
+      document
+        .getElementById("consultationForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          document.getElementById("successMessage").style.display = "block";
+
+          setTimeout(() => {
+            document.getElementById("successMessage").style.display = "none";
+            document.getElementById("consultationForm").reset();
+          }, 3000);
+        });
+    </script>
+  </body>
+</html>
