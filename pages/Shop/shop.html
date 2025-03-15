@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ArogyaMitra Store</title>
+    <link rel="stylesheet" href="shop.css" />
+    <script defer src="shop.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>🛒 ArogyaMitra Ayurvedic Store</h1>
+      <input
+        type="text"
+        id="search-box"
+        placeholder="🔍 Search products..."
+        onkeyup="searchProducts()"
+      />
+    </header>
+
+    <!-- Product Filters -->
+    <section class="filters">
+      <button onclick="filterProducts('all')">All</button>
+      <button onclick="filterProducts('skin-care')">🌿 Skin Care</button>
+      <button onclick="filterProducts('stress-relief')">
+        🧘 Stress Relief
+      </button>
+      <button onclick="filterProducts('immunity')">💪 Immunity</button>
+    </section>
+
+    <!-- Product Listings -->
+    <section id="products">
+      <div class="product" data-category="skin-care">
+        <img src="images/turmeric-cream.jpg" alt="Turmeric Face Cream" />
+        <h3>Turmeric Face Cream</h3>
+        <p>₹299 - Natural skin glow</p>
+        <button onclick="addToCart(101, 'Turmeric Face Cream', 299)">
+          Add to Cart
+        </button>
+      </div>
+
+      <div class="product" data-category="stress-relief">
+        <img src="images/ashwagandha.jpg" alt="Ashwagandha Capsules" />
+        <h3>Ashwagandha Capsules</h3>
+        <p>₹499 - Relieves stress</p>
+        <button onclick="addToCart(102, 'Ashwagandha Capsules', 499)">
+          Add to Cart
+        </button>
+      </div>
+
+      <div class="product" data-category="immunity">
+        <img src="images/chyawanprash.jpg" alt="Chyawanprash" />
+        <h3>Chyawanprash</h3>
+        <p>₹599 - Boosts immunity</p>
+        <button onclick="addToCart(103, 'Chyawanprash', 599)">
+          Add to Cart
+        </button>
+      </div>
+    </section>
+
+    <!-- AI Product Recommendations -->
+    <section id="ai-recommendations">
+      <button onclick="showRecommendations()">🤖 Get AI Recommendations</button>
+      <div id="recommendation-output"></div>
+    </section>
+
+    <!-- Shopping Cart -->
+    <section class="cart">
+      <h2>Your Cart 🛍️</h2>
+      <div id="cart-items"></div>
+      <button
+        id="checkout-btn"
+        style="display: none"
+        onclick="proceedToCheckout()"
+      >
+        Proceed to Checkout
+      </button>
+    </section>
+  </body>
+</html>

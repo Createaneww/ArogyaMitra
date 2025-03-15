@@ -57,8 +57,8 @@
         color: #2c3e50;
       }
 
-      input,
-      button {
+      select,
+      input {
         width: 100%;
         padding: 12px;
         margin-top: 8px;
@@ -70,30 +70,67 @@
         background: #f8f9fa;
       }
 
-      input:focus {
+      input:focus,
+      select:focus {
         border: 1px solid #27ae60;
         background: white;
       }
 
-      button {
-        background: #27ae60;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s, transform 0.2s;
-        margin-top: 15px;
+      /* Gauge Meter */
+      .gauge-container {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
       }
 
-      button:hover {
-        background: #1e8449;
-        transform: scale(1.05);
+      .gauge {
+        width: 150px;
+        height: 75px;
+        background: conic-gradient(
+          #27ae60 0deg,
+          #27ae60 10deg,
+          #f1c40f 10deg,
+          #f1c40f 30deg,
+          #e67e22 30deg,
+          #e67e22 50deg,
+          #e74c3c 50deg,
+          #e74c3c 180deg
+        );
+        border-radius: 150px 150px 0 0;
+        position: relative;
+      }
+
+      .gauge::before {
+        content: "";
+        position: absolute;
+        width: 90%;
+        height: 90%;
+        background: white;
+        border-radius: 150px 150px 0 0;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+      }
+
+      .needle {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        width: 3px;
+        height: 60px;
+        background: black;
+        transform-origin: bottom center;
+        transform: rotate(0deg);
+        transition: transform 0.5s ease-in-out;
       }
 
       /* Result Box */
       #result {
         font-size: 16px;
         font-weight: bold;
-        text-align: left;
+        text-align: center;
         margin-top: 20px;
         background: #e9f7ef;
         padding: 15px;
@@ -131,28 +168,23 @@
         color: #27ae60;
       }
 
-      /* Diet & Exercise Plan */
-      .plan {
+      /* Button Styles */
+      .chart-btn {
         margin-top: 15px;
         padding: 12px;
-        border-radius: 10px;
-        font-size: 15px;
-        background: #fdf2e9;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        background: #3498db;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.3s, transform 0.2s;
       }
 
-      .plan h4 {
-        color: #d35400;
-        margin-bottom: 8px;
-      }
-
-      .plan ul {
-        padding-left: 20px;
-      }
-
-      .plan ul li::before {
-        content: "🍎";
-        margin-right: 8px;
+      .chart-btn:hover {
+        background: #2980b9;
+        transform: scale(1.05);
       }
 
       /* Responsive */
@@ -178,50 +210,51 @@
         <h2>⚖️ BMI Calculator</h2>
         <p>Enter your height and weight to calculate your BMI.</p>
 
+        <label for="gender">Gender:</label>
+        <select id="gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+
+        <label for="age">Age Group:</label>
+        <select id="age">
+          <option value="adult">18-64</option>
+          <option value="senior">65+</option>
+        </select>
+
         <label for="height">Height (cm):</label>
-        <input type="number" id="height" placeholder="Enter height in cm" />
+        <input
+          type="number"
+          id="height"
+          placeholder="Enter height in cm"
+          oninput="calculateBMI()"
+        />
 
         <label for="weight">Weight (kg):</label>
-        <input type="number" id="weight" placeholder="Enter weight in kg" />
+        <input
+          type="number"
+          id="weight"
+          placeholder="Enter weight in kg"
+          oninput="calculateBMI()"
+        />
 
-        <button onclick="calculateBMI()">Calculate BMI</button>
+        <!-- Animated BMI Gauge -->
+        <div class="gauge-container">
+          <div class="gauge">
+            <div class="needle"></div>
+          </div>
+        </div>
 
+        <!-- BMI Result -->
         <div id="result"></div>
-        <!-- Add this inside the .bmi-calculator div, below the result div -->
+
+        <!-- Button to View BMI Chart -->
         <button
+          class="chart-btn"
           onclick="window.location.href='bmi-chart.html'"
-          style="
-            margin-top: 10px;
-            padding: 12px;
-            background: #3498db;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.3s, transform 0.2s;
-          "
         >
           📊 View BMI Chart
         </button>
-      </div>
-
-      <!-- Right Side: Informational Panel -->
-      <div class="info-panel">
-        <h3>What is BMI?</h3>
-        <p>
-          The Body Mass Index (BMI) is a simple calculation used to determine
-          whether a person has a healthy body weight for their height.
-        </p>
-
-        <h3>BMI Categories:</h3>
-        <ul>
-          <li><b>Underweight:</b> BMI below 18.5</li>
-          <li><b>Normal Weight:</b> BMI 18.5 - 24.9</li>
-          <li><b>Overweight:</b> BMI 25 - 29.9</li>
-          <li><b>Obese:</b> BMI 30 or above</li>
-        </ul>
       </div>
     </div>
 
@@ -230,6 +263,7 @@
         let height = parseFloat(document.getElementById("height").value) / 100;
         let weight = parseFloat(document.getElementById("weight").value);
         let resultDiv = document.getElementById("result");
+        let needle = document.querySelector(".needle");
 
         if (!height || !weight || height <= 0 || weight <= 0) {
           resultDiv.innerHTML = "⚠️ Please enter valid height and weight.";
@@ -238,35 +272,10 @@
         }
 
         let bmi = (weight / (height * height)).toFixed(1);
-        let resultText = "";
-        let plan = "";
+        let degree = Math.min(180, Math.max(0, bmi * 6)); // Scale BMI to gauge
+        needle.style.transform = `rotate(${degree}deg)`;
 
-        if (bmi < 18.5) {
-          resultText = `⚠️ Underweight (BMI: ${bmi}) - You may need to gain weight.`;
-          plan = `<div class="plan"><h4>🍲 Diet Plan:</h4>
-                        <ul><li>Eat high-calorie, nutrient-dense foods.</li>
-                        <li>Include proteins, whole grains, and healthy fats.</li></ul>
-                        <h4>🏋️ Exercise Plan:</h4>
-                        <ul><li>Strength training to build muscle.</li>
-                        <li>Moderate cardio exercises.</li></ul></div>`;
-        } else if (bmi >= 18.5 && bmi < 24.9) {
-          resultText = `✅ Normal Weight (BMI: ${bmi}) - You have a healthy weight!`;
-          plan = `<div class="plan"><h4>🍎 Healthy Tips:</h4>
-                        <ul><li>Maintain balanced diet & exercise routine.</li>
-                        <li>Stay hydrated and get enough sleep.</li></ul></div>`;
-        } else if (bmi >= 25 && bmi < 29.9) {
-          resultText = `⚠️ Overweight (BMI: ${bmi}) - Consider making lifestyle changes.`;
-          plan = `<div class="plan"><h4>🥗 Diet Plan:</h4>
-                        <ul><li>Reduce sugar & processed foods.</li>
-                        <li>Increase veggies and lean proteins.</li></ul></div>`;
-        } else {
-          resultText = `🚨 Obese (BMI: ${bmi}) - You may need medical guidance.`;
-          plan = `<div class="plan"><h4>⚠️ Recommendations:</h4>
-                        <ul><li>Adopt portion-controlled diet.</li>
-                        <li>Engage in regular exercise.</li></ul></div>`;
-        }
-
-        resultDiv.innerHTML = `<p>${resultText}</p>${plan}`;
+        resultDiv.innerHTML = `Your BMI: ${bmi}`;
         resultDiv.style.display = "block";
       }
     </script>
