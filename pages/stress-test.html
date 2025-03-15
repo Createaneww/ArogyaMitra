@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Stress Test</title>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        text-align: center;
+        background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
+        color: white;
+        padding: 20px;
+      }
+      .container {
+        max-width: 500px;
+        margin: auto;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+      .question {
+        font-size: 18px;
+        margin: 15px 0;
+      }
+      select,
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        border: none;
+        outline: none;
+        transition: 0.3s;
+      }
+      select {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+      button {
+        background: #ffcc00;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #ffaa00;
+      }
+      #progress {
+        width: 100%;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+        margin-top: 10px;
+        position: relative;
+      }
+      #progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #ffcc00;
+        border-radius: 5px;
+        transition: width 0.3s ease-in-out;
+      }
+      #result {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>😰 Advanced Stress Test</h2>
+      <p>Answer the following questions to analyze your stress level.</p>
+
+      <div id="progress">
+        <div id="progress-bar"></div>
+      </div>
+
+      <div class="question">
+        <label>1. How often do you feel overwhelmed?</label>
+        <select id="q1">
+          <option value="1">Rarely</option>
+          <option value="3">Sometimes</option>
+          <option value="5">Often</option>
+          <option value="7">Almost Always</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label>2. How well do you sleep at night?</label>
+        <select id="q2">
+          <option value="1">Very well</option>
+          <option value="3">Okay</option>
+          <option value="5">Not great</option>
+          <option value="7">Terrible</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label>3. Do you often feel anxious?</label>
+        <select id="q3">
+          <option value="1">Rarely</option>
+          <option value="3">Sometimes</option>
+          <option value="5">Often</option>
+          <option value="7">Almost Always</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label>4. How often do you have headaches or fatigue?</label>
+        <select id="q4">
+          <option value="1">Never</option>
+          <option value="3">Occasionally</option>
+          <option value="5">Frequently</option>
+          <option value="7">Daily</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label>5. Do you use meditation or relaxation techniques?</label>
+        <select id="q5">
+          <option value="1">Yes, daily</option>
+          <option value="3">Sometimes</option>
+          <option value="5">Rarely</option>
+          <option value="7">Never</option>
+        </select>
+      </div>
+
+      <button onclick="calculateStress()">Check Stress Level</button>
+
+      <div id="result"></div>
+    </div>
+
+    <script>
+      function calculateStress() {
+        let score = 0;
+        score += parseInt(document.getElementById("q1").value);
+        score += parseInt(document.getElementById("q2").value);
+        score += parseInt(document.getElementById("q3").value);
+        score += parseInt(document.getElementById("q4").value);
+        score += parseInt(document.getElementById("q5").value);
+
+        let resultText = "";
+        let suggestions = "";
+
+        if (score <= 10) {
+          resultText = "😌 Low Stress - You are doing well!";
+          suggestions =
+            "✅ Keep maintaining a balanced routine and daily mindfulness exercises.";
+        } else if (score <= 20) {
+          resultText =
+            "😐 Moderate Stress - Try to improve relaxation techniques.";
+          suggestions =
+            "🔹 Try deep breathing exercises, yoga, or short walks to lower stress levels.";
+        } else {
+          resultText = "😰 High Stress - Consider serious stress management.";
+          suggestions =
+            "⚠️ Try meditation, cut screen time before bed, and consider consulting a specialist.";
+        }
+
+        document.getElementById(
+          "result"
+        ).innerHTML = `<p>${resultText}</p><p>${suggestions}</p>`;
+
+        // Animate Progress Bar
+        let progressBar = document.getElementById("progress-bar");
+        let progress = (score / 35) * 100;
+        progressBar.style.width = progress + "%";
+      }
+    </script>
+  </body>
+</html>

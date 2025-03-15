@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heart Rate Monitor (Real BPM)</title>
+    <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        text-align: center;
+        background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
+        color: white;
+        padding: 20px;
+      }
+      .container {
+        max-width: 500px;
+        margin: auto;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+      video {
+        width: 100%;
+        border-radius: 10px;
+        margin-top: 10px;
+      }
+      button {
+        padding: 12px;
+        width: 100%;
+        background: #ffcc00;
+        color: black;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+      }
+      button:hover {
+        background: #ffaa00;
+      }
+      #bpm {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>❤️ Real-Time Heart Rate Monitor</h2>
+      <p>Place your fingertip on the camera to measure your pulse.</p>
+      <video id="cameraFeed" autoplay></video>
+      <button onclick="startHeartRateMonitor()">Start Measuring</button>
+      <div id="bpm">BPM: --</div>
+    </div>
+
+    <script>
+      let video = document.getElementById("cameraFeed");
+      let bpmDisplay = document.getElementById("bpm");
+      let frameBuffer = [];
+      const bufferSize = 100; // Number of frames for analysis
+      let startTime, captureInterval;
+
+      async function startHeartRateMonitor() {
+        try {
+          let stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" },
+          });
+          video.srcObject = stream;
+
+          // Start processing video frames
+          startTime = Date.now();
+          captureInterval = setInterval(processFrame, 100);
+        } catch (error) {
+          alert("Camera access is required to measure heart rate.");
+        }
+      }
+
+      function processFrame() {
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          let canvas = document.createElement("canvas");
+          let ctx = canvas.getContext("2d");
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          let frameData = ctx.getImageData(
+            canvas.width / 2,
+            canvas.height / 2,
+            1,
+            1
+          ).data;
+          let redValue = frameData[0]; // Extract red channel intensity
+
+          frameBuffer.push(redValue);
+          if (frameBuffer.length > bufferSize) {
+            frameBuffer.shift();
+          }
+
+          if (frameBuffer.length === bufferSize) {
+            calculateBPM();
+          }
+        }
+      }
+
+      function calculateBPM() {
+        let peaks = 0;
+        for (let i = 1; i < frameBuffer.length - 1; i++) {
+          if (
+            frameBuffer[i] > frameBuffer[i - 1] &&
+            frameBuffer[i] > frameBuffer[i + 1]
+          ) {
+            peaks++;
+          }
+        }
+
+        let timeElapsed = (Date.now() - startTime) / 1000; // Convert to seconds
+        let bpm = Math.round((peaks / timeElapsed) * 60); // Convert to BPM
+
+        bpmDisplay.innerHTML = `BPM: ${bpm}`;
+      }
+    </script>
+  </body>
+</html>
