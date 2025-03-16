@@ -51,7 +51,7 @@ ArogyaMitra is an innovative platform that integrates **Artificial Intelligence 
 ## 📬 Contact Us
 
 📧 Email: [support@arogyamitra.com](mailto:whoankitchauhan.com)  
-📞 Phone: [+91 98765 43210](tel:7011107200)
+📞 Phone: [+91 7011107200](tel:7011107200)
 
 🌟 Follow Us: [Facebook](#) | [Twitter](#) | [Instagram](#) | [LinkedIn](#)
 
