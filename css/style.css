@@ -216,14 +216,6 @@ button.next:hover {
   background: #ffaa00;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #333;
-  color: white;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   nav ul {
@@ -299,4 +291,204 @@ footer {
 .diagnosis-box .btn:hover {
   background: #ffcc00;
   color: #333;
+}
+/* Key Statistics Section */
+.statistics {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 50px 20px;
+  background: #e3f2e1;
+  text-align: center;
+}
+
+.stat-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 180px;
+  transition: transform 0.3s;
+}
+
+.stat-box:hover {
+  transform: scale(1.05);
+}
+
+.stat-box h3 {
+  font-size: 28px;
+  color: #2c7a59;
+  margin-bottom: 5px;
+}
+
+.stat-box p {
+  font-size: 16px;
+  color: #555;
+  font-weight: bold;
+}
+
+/* How It Works Section */
+.how-it-works {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f8f8;
+}
+
+.how-it-works h2 {
+  font-size: 26px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.steps-container {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.step {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 230px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.step:hover {
+  transform: translateY(-5px);
+}
+
+.step span {
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c7a59;
+  background: #ffcc00;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+}
+
+.step h3 {
+  font-size: 18px;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.step p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Footer */
+footer {
+  background: #2c3e50;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1200px;
+  margin: auto;
+  padding-bottom: 20px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 220px;
+  text-align: left;
+}
+
+.footer-section h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #ffcc00;
+}
+
+.footer-section p,
+.footer-section ul {
+  font-size: 14px;
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+/* ✅ Contact Links - Fix Blue Color */
+.footer-section ul li a {
+  color: white !important; /* Force white text */
+  text-decoration: none !important; /* Remove underline */
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between icon and text */
+}
+
+/* Change color on hover */
+.footer-section ul li a:hover {
+  color: #ffcc00 !important; /* Yellow on hover */
+}
+
+/* ✅ Add Icons for Email & Phone */
+.footer-section ul li a[href^="mailto:"]::before {
+  content: "📧"; /* Email icon */
+  font-size: 16px;
+}
+
+.footer-section ul li a[href^="tel:"]::before {
+  content: "📞"; /* Phone icon */
+  font-size: 16px;
+}
+
+/* ✅ Footer Social Icons */
+.social-icons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.social-icons a {
+  display: inline-block;
+  background: #ffcc00; /* Matching theme color */
+  padding: 8px;
+  border-radius: 50%;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.social-icons a img {
+  width: 25px;
+  height: 25px;
+  display: block;
+}
+
+.social-icons a:hover {
+  background: #ffaa00;
+  transform: scale(1.1);
+}
+
+/* ✅ Footer Bottom Section */
+.footer-bottom {
+  border-top: 1px solid #555;
+  margin-top: 20px;
+  padding-top: 10px;
+  font-size: 14px;
+  color: #bbb;
 }

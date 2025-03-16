@@ -4,22 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Symptom Checker</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-      /* Global Styling */
       body {
         font-family: "Poppins", sans-serif;
-        text-align: center;
         background: #f4f4f4;
         padding: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
       }
 
-      /* Container */
       .container {
-        max-width: 500px;
+        max-width: 550px;
         background: white;
         padding: 30px;
         border-radius: 12px;
@@ -34,14 +36,16 @@
         margin-bottom: 10px;
       }
 
-      p {
-        color: #555;
-        font-size: 14px;
-        text-align: center;
-        margin-bottom: 15px;
+      label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: left;
+        color: #2c3e50;
       }
 
-      /* Textarea Styling */
+      input,
+      select,
       textarea {
         width: 100%;
         padding: 12px;
@@ -50,16 +54,16 @@
         border: 1px solid #ccc;
         outline: none;
         background: #f8f9fa;
-        resize: none;
         transition: border 0.3s;
       }
 
+      input:focus,
+      select:focus,
       textarea:focus {
         border: 1px solid #3498db;
         background: white;
       }
 
-      /* Button */
       button {
         width: 100%;
         padding: 14px;
@@ -78,8 +82,7 @@
         transform: scale(1.02);
       }
 
-      /* Result Box */
-      #result {
+      #response {
         font-size: 16px;
         font-weight: bold;
         text-align: left;
@@ -88,114 +91,112 @@
         padding: 15px;
         border-radius: 8px;
         display: none;
-      }
-
-      /* Typing Animation */
-      .typing {
-        display: inline-block;
-        font-size: 16px;
-        font-weight: bold;
-        color: #2c3e50;
-      }
-
-      .typing span {
-        display: inline-block;
-        animation: blink 1.5s infinite;
-      }
-
-      .typing span:nth-child(2) {
-        animation-delay: 0.2s;
-      }
-
-      .typing span:nth-child(3) {
-        animation-delay: 0.4s;
-      }
-
-      @keyframes blink {
-        0% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0;
-        }
-        100% {
-          opacity: 1;
-        }
+        max-height: 250px;
+        overflow-y: auto;
       }
     </style>
   </head>
   <body>
     <div class="container">
       <h2>🩺 AI Symptom Checker</h2>
-      <p>Describe your symptoms and get AI-based health analysis.</p>
+      <p>Enter your details to get a personalized health analysis.</p>
+
+      <label for="age">Age:</label>
+      <input type="number" id="age" placeholder="Enter your age" required />
+
+      <label for="gender">Gender:</label>
+      <select id="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="symptoms">Describe Your Symptoms:</label>
       <textarea
         id="symptoms"
-        rows="4"
-        placeholder="e.g., I have a fever and sore throat."
+        rows="3"
+        placeholder="e.g., Fever, sore throat..."
+        required
       ></textarea>
+
+      <label for="duration">Duration of Symptoms:</label>
+      <input type="text" id="duration" placeholder="e.g., 3 days" required />
+
+      <label for="medications">Current Medications (if any):</label>
+      <input
+        type="text"
+        id="medications"
+        placeholder="e.g., Paracetamol, Antibiotics"
+      />
+
       <button onclick="analyzeSymptoms()">Check Symptoms</button>
-      <div id="result"></div>
+
+      <div id="response"></div>
     </div>
 
     <script>
       async function analyzeSymptoms() {
-        let symptoms = document.getElementById("symptoms").value;
-        let resultDiv = document.getElementById("result");
+        let age = document.getElementById("age").value.trim();
+        let gender = document.getElementById("gender").value.trim();
+        let symptoms = document.getElementById("symptoms").value.trim();
+        let duration = document.getElementById("duration").value.trim();
+        let medications = document.getElementById("medications").value.trim();
+        let responseDiv = document.getElementById("response");
 
-        if (symptoms.trim() === "") {
-          resultDiv.innerHTML = "⚠️ Please enter your symptoms.";
-          resultDiv.style.display = "block";
+        if (!age || !symptoms || !duration) {
+          responseDiv.innerHTML = "⚠️ Please fill in all required fields.";
+          responseDiv.style.display = "block";
           return;
         }
 
-        resultDiv.innerHTML = `<span class="typing">⏳ Analyzing symptoms<span>.</span><span>.</span><span>.</span></span>`;
-        resultDiv.style.display = "block";
-
-        // OpenAI API call (replace 'sk-' with your actual API key)
-        const apiKey = "sk-";
-        const endpoint = "https://api.openai.com/v1/chat/completions";
+        responseDiv.innerHTML = "⏳ Analyzing symptoms... Please wait.";
+        responseDiv.style.display = "block";
 
         try {
-          const response = await fetch(endpoint, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${apiKey}`,
-            },
-            body: JSON.stringify({
-              model: "gpt-4",
-              messages: [
-                {
-                  role: "system",
-                  content:
-                    "You are an AI medical assistant that provides health analysis based on symptoms. Give short, accurate explanations and recommendations.",
-                },
-                {
-                  role: "user",
-                  content: `I have the following symptoms: ${symptoms}. What could be the possible causes and recommendations?`,
-                },
-              ],
-              temperature: 0.7,
-            }),
-          });
-
-          if (!response.ok) {
-            throw new Error(`API Error: ${response.statusText}`);
-          }
+          const response = await fetch(
+            "https://openrouter.ai/api/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                Authorization:
+                  "Bearer YOUR_KEY", // Replace with your OpenRouter API Key
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://www.yoursite.com",
+                "X-Title": "ArogyaMitra Symptom Checker",
+              },
+              body: JSON.stringify({
+                model: "deepseek/deepseek-r1:free",
+                messages: [
+                  {
+                    role: "system",
+                    content:
+                      "You are an AI medical assistant that provides detailed health analysis.",
+                  },
+                  {
+                    role: "user",
+                    content: `Patient Details:
+                                - Age: ${age}
+                                - Gender: ${gender}
+                                - Symptoms: ${symptoms}
+                                - Duration: ${duration}
+                                - Medications: ${medications || "None"}
+                                Based on this, provide possible causes and best recommendations.`,
+                  },
+                ],
+              }),
+            }
+          );
 
           const data = await response.json();
 
           if (!data.choices || data.choices.length === 0) {
-            throw new Error("No response from AI.");
+            throw new Error("No response received from AI.");
           }
 
-          const aiResponse = data.choices[0].message.content;
-
-          resultDiv.innerHTML = `<p><b>AI Diagnosis:</b> ${aiResponse}</p>`;
+          responseDiv.innerHTML = marked.parse(data.choices[0].message.content);
         } catch (error) {
-          resultDiv.innerHTML =
-            "❌ Error fetching AI response. Please try again.";
-          console.error(error);
+          console.error("Error fetching AI response:", error);
+          responseDiv.innerHTML = "❌ Error: AI not responding. Try again.";
         }
       }
     </script>
